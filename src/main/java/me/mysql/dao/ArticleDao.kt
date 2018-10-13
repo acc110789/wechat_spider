@@ -11,7 +11,7 @@ private const val DB_NAME_ARTICLE = "tg_collect_article_temp"
 private const val SQL_FIND_ARTICLE = "select count(1) from $DB_NAME_ARTICLE where title = ?"
 
 private const val SQL_INSERT_ARTICLE = "insert into $DB_NAME_ARTICLE " +
-        "(weChatId,weChatNickName,title,url,imgLink,description,content,lastModifiedTime) " +
+        "(we_chat_id,we_chat_nick_name,title,url,img_link,description,content,last_modified_time) " +
         "values(?,?,?,?,?,?,?,?)"
 
 object ArticleDao {

@@ -12,7 +12,7 @@ object MysqlDB {
 
     private const val DB_NAME = "db_we_chat_article"
 
-    private const val USER = "zhangxl"
+    private const val USER = "zhangxiaolong"
 
     private const val PASSWORD = "12345678"
 
