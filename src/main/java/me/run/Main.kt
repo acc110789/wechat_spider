@@ -12,6 +12,7 @@ import me.spider.WhenArticleLoaded
 object Main {
 
     private val articleLoadCallback: WhenArticleLoaded =  { article ->
+        println("save article: ${article.title}")
         ArticleDao.save(article)
     }
 
