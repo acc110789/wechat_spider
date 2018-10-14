@@ -7,8 +7,8 @@ object Sleep {
 
     /**随机时间睡眠 1秒到10秒之间*/
     fun random() {
-        val start = 1000
-        val end = 1000 * 3
+        val start = 2000
+        val end = 1000 * 5
         random(start, end)
     }
 
