@@ -41,9 +41,9 @@ data class WeChatAccount(
 
         private fun getAccountPair(): List<Pair<String, String>> {
             return listOf(
-                    "十点读书" to "duhaoshu",
                     "学生安全教育平台" to "xueanquan123",
                     "夜听" to "yetingfm",
+                    "十点读书" to "duhaoshu",
                     "中国移动" to "cmccguanfang",
                     "球球大作战" to "bobsuperjuice",
                     "微店" to "vdian_niall",

@@ -29,3 +29,5 @@ const val RELATED_ACCOUNT = "%s的相关微信公众号"
 const val HREFS = "hrefs"
 
 const val BODY = "body"
+
+const val ENCODING = "utf8mb4"

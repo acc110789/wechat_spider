@@ -1,5 +1,6 @@
 package me.mysql.db
 
+import me.crawl.utils.ENCODING
 import java.sql.*
 import java.util.ArrayList
 import java.util.HashMap
@@ -24,7 +25,8 @@ object MysqlDB {
 
     private val connection: Connection by lazy {
         println("connecting to mysql ...")
-        val conStr = "jdbc:mysql://$HOST/$DB_NAME?user=$USER&password=$PASSWORD&useUnicode=true&characterEncoding=utf-8"
+        val conStr = "jdbc:mysql://$HOST/$DB_NAME?user=$USER&password=$PASSWORD" /*+
+                "&useUnicode=true&characterEncoding=$ENCODING"*/
         DriverManager.getConnection(conStr)
     }
 
@@ -67,6 +69,11 @@ object MysqlDB {
 
         // 执行
         return preparedStatement.executeQuery()
+    }
+
+    fun executeSql(sql: String): Boolean {
+        val statement = connection.prepareStatement(sql)
+        return statement.execute()
     }
 
     /**
