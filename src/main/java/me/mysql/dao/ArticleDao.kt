@@ -51,8 +51,8 @@ object ArticleDao {
         println("init ArticleDao: $result")
     }
 
-    /** 把文章保存在数据库中 */
-    fun save(article: Article): Int {
+    /** 本地数据库是否存在对应的article */
+    fun isArticleExist(article: Article): Boolean {
         //判断文章在数据库中是否已经存在
         val findParam = ArrayList<String>()
         findParam.add(article.weChatId)
@@ -60,12 +60,12 @@ object ArticleDao {
         findParam.add(article.title)
         val obj = MysqlDB.executeQuerySingle(SQL_FIND_ARTICLE, findParam.toTypedArray())
         val count = if (obj == null)  0 else Integer.parseInt(obj.toString())
-        val exist = count > 0
-        if(exist) {
-            println("article: " + article.title + " already exist!")
-            return 0
-        }
+        return count > 0
+    }
 
+    /** 把文章保存在数据库中 */
+    fun save(article: Article): Int {
+        if(isArticleExist(article)) return 0
 
         //插入数据库
         val insertValue = ArrayList<Any?>()

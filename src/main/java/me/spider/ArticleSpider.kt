@@ -25,7 +25,9 @@ typealias WhenArticleLoaded = (Article) -> Unit
  * 通过公众号昵称 公众号号 从搜索页进入进行抓取
  */
 
-class ArticleSpider(private val account: WeChatAccount , private val articleLoadCallback: WhenArticleLoaded? = null) {
+class ArticleSpider(private val account: WeChatAccount,
+                    val articleFilter: ((Article) -> Boolean)? = null,
+                    private val articleLoadCallback: WhenArticleLoaded? = null) {
 
     private val driver: WebDriver = Browser.obtainWebDriver()
 
@@ -56,7 +58,9 @@ class ArticleSpider(private val account: WeChatAccount , private val articleLoad
         //解析第一页文章的元素
         val allElements = getArticleElements()
 
-        val articles = allElements.map { articleElementToArticle(it) }
+        var articles = allElements.map { articleElementToArticle(it) }
+
+        if(articleFilter != null) articles = articles.filter(articleFilter)
 
         articles.forEach {
             fetchArticleContent(it)

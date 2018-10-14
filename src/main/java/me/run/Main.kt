@@ -16,6 +16,10 @@ object Main {
         ArticleDao.save(article)
     }
 
+    private val articleFilter:(Article)->Boolean = { article ->
+        !ArticleDao.isArticleExist(article)
+    }
+
     @JvmStatic
     fun main(args: Array<String>) {
         val accounts = WeChatAccount.new
@@ -25,7 +29,7 @@ object Main {
     }
 
     private fun crawlAccount(account: WeChatAccount): List<Article> {
-        val sp = ArticleSpider(account , articleLoadCallback)
+        val sp = ArticleSpider(account, articleFilter, articleLoadCallback)
         return sp.crawlArticles()
     }
 

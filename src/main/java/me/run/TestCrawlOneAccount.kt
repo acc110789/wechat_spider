@@ -17,7 +17,7 @@ object TestCrawlOneAccount {
     @JvmStatic
     fun main(args: Array<String>) {
         val account = WeChatAccount("创意DIY", "ideadiy")
-        val spider = ArticleSpider(account , articleLoadCallback)
+        val spider = ArticleSpider(account, null, articleLoadCallback)
         spider.crawlArticles()
     }
 }
