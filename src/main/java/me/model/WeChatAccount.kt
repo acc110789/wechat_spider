@@ -46,7 +46,7 @@ data class WeChatAccount(
                     "十点读书" to "duhaoshu",
                     "中国移动" to "cmccguanfang",
                     "球球大作战" to "bobsuperjuice",
-                    "微店" to "vdian_niall",
+                    "微店" to "vdian_mall",
                     "卡娃微卡" to "kawa01",
                     "开心消消乐" to "happyxiaoxiaole",
                     "二更" to "ergengshipin",

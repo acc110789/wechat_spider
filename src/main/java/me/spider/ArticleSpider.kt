@@ -43,10 +43,7 @@ class ArticleSpider(private val account: WeChatAccount , private val articleLoad
      * 根据公众号爬取文章
      */
     fun crawlArticles(): List<Article> {
-        val navigator = HomePageNavigator(account, driver)
-
-        //搜公众号，定位到公众号页面
-        if (!navigator.navigateToHomePage()) return emptyList()
+        if (!tryNavigateToHomePage()) return emptyList()
 
         //切换到公众号列表页
         driver.switchToWindow(account.nick)
@@ -58,7 +55,6 @@ class ArticleSpider(private val account: WeChatAccount , private val articleLoad
 
         //解析第一页文章的元素
         val allElements = getArticleElements()
-        println("find ${allElements.size} article element")
 
         val articles = allElements.map { articleElementToArticle(it) }
 
@@ -70,6 +66,16 @@ class ArticleSpider(private val account: WeChatAccount , private val articleLoad
         driver.quit()
 
         return articles
+    }
+
+    private fun tryNavigateToHomePage(): Boolean {
+        //搜公众号，定位到公众号页面
+        val navigator = HomePageNavigator(account, driver)
+        val success = navigator.navigateToHomePage()
+        if (!success) {
+            driver.quit()
+        }
+        return success
     }
 
 
