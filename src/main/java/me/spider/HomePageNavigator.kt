@@ -32,9 +32,9 @@ private const val ACCOUNT_LINK_SELECTOR = ".news-box li .txt-box .tit a"
 /**
  * 导航到微信公众号的个人主页
  */
-class HomePageNavigator(private val account: WeChatAccount, private val driver: WebDriver = Browser.obtainWebDriver()) {
+class HomePageNavigator(private val account: WeChatAccount, private val driver: WebDriver = obtainWebDriver()) {
 
-    var findTarget: Boolean = false
+    private var findTarget: Boolean = false
 
     var hasNext: Boolean = true
 
@@ -124,14 +124,14 @@ class HomePageNavigator(private val account: WeChatAccount, private val driver: 
         //法律法规 or 找不到公众号
         if (driver.isElementExist(By.id(UNUSUAL_ID_1)) || driver.isElementExist(By.id(UNUSUAL_ID_2))) {
             val msg = "$LAW or $ACCOUNT_NOT_FOUND : ${driver.currentUrl}"
-            println(msg)
+            Logger.log(msg)
             return Result.Error(CODE_UNUSUAL, msg)
         }
 
         //出现了验证码
         if (driver.isElementExist(By.id(ID_CAPTCHAR))) {
             val msg = "$FOUND_CAPTCHAR : ${driver.currentUrl}"
-            println(msg)
+            Logger.log(msg)
             return Result.Error(CODE_NEED_CAPTCHAR , msg)
         }
 
@@ -140,7 +140,7 @@ class HomePageNavigator(private val account: WeChatAccount, private val driver: 
 
     private val matchTargetWeChatId: (String)->Boolean = checker@{
         if(it != account.weChatId) return@checker false
-        println("WeChatId :$it match target ...")
+        Logger.log("WeChatId :$it match target ...")
         findTarget = true
         true
     }
@@ -151,7 +151,7 @@ class HomePageNavigator(private val account: WeChatAccount, private val driver: 
         for (i in accountIds.indices) {
             val accountEle = accountIds[i] as WebElement
             val weChatId = accountEle.text
-            println("find WeChatId :$weChatId")
+            Logger.log("find WeChatId :$weChatId")
             if (!matchTargetWeChatId(weChatId)) continue
             val h3 = accountLinks[i] as WebElement
             return Result.Success(h3)

@@ -1,9 +1,8 @@
-package me.mysql.dao
+package me.db
 
 
-import me.crawl.utils.ENCODING
+import me.crawl.utils.Logger
 import me.model.Article
-import me.mysql.db.MysqlDB
 
 import java.util.ArrayList
 
@@ -48,7 +47,7 @@ object ArticleDao {
 
     init {
         val result = MysqlDB.executeSql(CREATE_TABLE_IF_NOT_EXIST)
-        println("init ArticleDao: $result")
+        Logger.log("init ArticleDao: $result")
     }
 
     /** 本地数据库是否存在对应的article */
@@ -79,7 +78,7 @@ object ArticleDao {
         insertValue.add(article.lastModifiedTime)
 
         val i = MysqlDB.executeUpdate(SQL_INSERT_ARTICLE, insertValue.toTypedArray())
-        println("insert article : ${article.title} , result : ${i > 0}")
+        Logger.log("insert article : ${article.title} , result : ${i > 0}")
         return i
     }
 

@@ -28,9 +28,7 @@ class ArticleSpider(private val account: WeChatAccount,
                     private val articleFilter: ((Article) -> Boolean)? = null,
                     private val articleLoadCallback: OnArticleLoaded? = null) {
 
-    private val driver: WebDriver = Browser.obtainWebDriver()
-
-    private var findLastArticle: Boolean? = false
+    private val driver: WebDriver = obtainWebDriver()
 
     /**
      * 根据公众号爬取文章
@@ -102,7 +100,7 @@ class ArticleSpider(private val account: WeChatAccount,
     private fun articleElementToArticle(articleElement: WebElement): Article {
         val titleElement = articleElement.findElement(By.cssSelector(SELECTOR_ARTICLE_TITLE))
         val title = titleElement.text
-        println("title :$title")
+        Logger.log("title :$title")
 
         val path = titleElement.getAttribute(HREFS)//获取跳转前的url
         val currentUrl = driver.currentUrl
@@ -110,19 +108,19 @@ class ArticleSpider(private val account: WeChatAccount,
         val protocol = url.protocol
         val host = url.host
         val articleUrl = "$protocol://$host$path"
-        println("link :$articleUrl")
+        Logger.log("link :$articleUrl")
 
         val desElement = articleElement.findElement(By.cssSelector(SELECTOR_ARTICLE_DES))
         val description = desElement.text
-        println("description :$description")
+        Logger.log("description :$description")
 
         val modifyTimeElement = articleElement.findElement(By.cssSelector(SELECTOR_ARTICLE_MODIFY_TIME))
         val modifyTime = modifyTimeElement.text
-        println("last modify time :$modifyTime")
+        Logger.log("last modify time :$modifyTime")
 
         val imgElement = articleElement.findElement(By.cssSelector(SELECTOR_ARTICLE_THUMB))
         val imgSrc = imgElement.getCssValue("background-image")
-        println("img src :$imgSrc")
+        Logger.log("img src :$imgSrc")
 
         return Article(
                 weChatId = account.weChatId,

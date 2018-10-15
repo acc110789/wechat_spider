@@ -2,7 +2,7 @@ package me.run
 
 import me.model.Article
 import me.model.WeChatAccount
-import me.mysql.dao.ArticleDao
+import me.db.ArticleDao
 import me.spider.ArticleSpider
 import me.spider.OnArticleLoaded
 

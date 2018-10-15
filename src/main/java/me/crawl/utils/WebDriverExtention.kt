@@ -2,6 +2,21 @@ package me.crawl.utils
 
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.firefox.FirefoxDriver
+
+
+private fun obtainChromeWebDriver(): ChromeDriver {
+    System.setProperty(CHROME_DRIVER_NAME, CHROME_DRIVER_PATH)
+    return ChromeDriver()
+}
+
+private fun obtainFirefoxDriver()= FirefoxDriver()
+
+fun obtainWebDriver(): WebDriver {
+    val os = System.getProperty(OS_NAME)
+    return if (os.contains(WINDOW)) obtainChromeWebDriver() else obtainFirefoxDriver()
+}
 
 /**
  * 通过选择器，往input中写入词语

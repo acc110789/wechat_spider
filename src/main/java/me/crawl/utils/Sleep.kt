@@ -17,11 +17,7 @@ object Sleep {
      */
     fun random(start: Int, end: Int) {
         val ms = Math.round(Math.random() * (end - start) + start).toInt()
-        try {
-            println("等待:" + ms + "毫秒")
-            Thread.sleep(ms.toLong())
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
+        Logger.log("等待:" + ms + "毫秒")
+        Thread.sleep(ms.toLong())
     }
 }

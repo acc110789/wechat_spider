@@ -12,29 +12,15 @@ data class WeChatAccount(
         val weChatId: String
 ) {
     companion object {
-        val all: List<WeChatAccount> = arrayListOf<WeChatAccount>().apply {
-            add(WeChatAccount("创意DIY", "ideadiy"))
 
-            add(WeChatAccount("XY500W", "xy500wjd"))
+        private val accountsInner = arrayListOf<WeChatAccount>().apply { getAccountPair().forEach { add(WeChatAccount(it.first , it.second)) } }
 
-            add(WeChatAccount("hellodd", "123"))
-
-            add(WeChatAccount("玖拾度智能衣柜橱柜", "jiushidujiaju"))
-
-            add(WeChatAccount("师兄网", "vipshixiong"))
-
-            add(WeChatAccount("芙蓉王", "fu-rongwang"))
-
-            add(WeChatAccount("长沙里手", "changshatong"))
-
-            add(WeChatAccount("长沙吃货", "cschwx"))
-        }
-
-        val accounts: List<WeChatAccount> = arrayListOf<WeChatAccount>().apply {
-            getAccountPair().forEach {
-                add(WeChatAccount(it.first , it.second))
+        val accounts: List<WeChatAccount>
+            get() {
+                val list = arrayListOf<WeChatAccount>()
+                list.addAll(accountsInner)
+                return list
             }
-        }
 
         private fun getAccountPair(): List<Pair<String, String>> {
             return listOf(

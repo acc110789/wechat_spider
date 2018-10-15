@@ -1,6 +1,6 @@
-package me.mysql.db
+package me.db
 
-import me.crawl.utils.ENCODING
+import me.crawl.utils.Logger
 import java.sql.*
 import java.util.ArrayList
 import java.util.HashMap
@@ -19,12 +19,12 @@ object MysqlDB {
 
 
     init {
-        println("加载数据库驱动程序...")
+        Logger.log("加载数据库驱动程序...")
         Class.forName(DRIVER)
     }
 
     private val connection: Connection by lazy {
-        println("connecting to mysql ...")
+        Logger.log("connecting to mysql ...")
         val conStr = "jdbc:mysql://$HOST/$DB_NAME?user=$USER&password=$PASSWORD" /*+
                 "&useUnicode=true&characterEncoding=$ENCODING"*/
         DriverManager.getConnection(conStr)
@@ -104,11 +104,6 @@ object MysqlDB {
 
     /**
      * 获取结果集，并将结果放在List中
-     *
-     * @param sql
-     * SQL语句
-     * @return List
-     * 结果集
      */
     fun executeQuery(sql: String, params: Array<Any>): List<Any> {
         // 执行SQL获得结果集

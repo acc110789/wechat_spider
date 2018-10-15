@@ -1,7 +1,7 @@
 package me.run
 
 import me.model.Article
-import me.mysql.dao.ArticleDao
+import me.db.ArticleDao
 
 object TestSaveArticle {
 
