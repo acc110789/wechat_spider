@@ -9,10 +9,7 @@ data class WeChatAccount(
         val nick: String,
 
         //公众号
-        val weChatId: String,
-
-        //抓取到的最新的文章id
-        val lastArticleTitle: String? = null
+        val weChatId: String
 ) {
     companion object {
         val all: List<WeChatAccount> = arrayListOf<WeChatAccount>().apply {
@@ -33,7 +30,7 @@ data class WeChatAccount(
             add(WeChatAccount("长沙吃货", "cschwx"))
         }
 
-        val new: List<WeChatAccount> = arrayListOf<WeChatAccount>().apply {
+        val accounts: List<WeChatAccount> = arrayListOf<WeChatAccount>().apply {
             getAccountPair().forEach {
                 add(WeChatAccount(it.first , it.second))
             }

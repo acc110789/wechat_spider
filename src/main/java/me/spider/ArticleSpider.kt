@@ -7,7 +7,6 @@ import org.openqa.selenium.*
 import me.model.WeChatAccount
 
 import java.net.URL
-import java.util.ArrayList
 
 private const val SELECTOR_ARTICLE_CONTAINER = ".weui_msg_card .weui_msg_card_bd .weui_media_box"
 
@@ -19,52 +18,52 @@ private const val SELECTOR_ARTICLE_MODIFY_TIME = ".weui_media_extra_info"
 
 private const val SELECTOR_ARTICLE_THUMB = "span.weui_media_hd"
 
-typealias WhenArticleLoaded = (Article) -> Unit
+typealias OnArticleLoaded = (Article) -> Unit
 
 /**
  * 通过公众号昵称 公众号号 从搜索页进入进行抓取
  */
 
 class ArticleSpider(private val account: WeChatAccount,
-                    val articleFilter: ((Article) -> Boolean)? = null,
-                    private val articleLoadCallback: WhenArticleLoaded? = null) {
+                    private val articleFilter: ((Article) -> Boolean)? = null,
+                    private val articleLoadCallback: OnArticleLoaded? = null) {
 
     private val driver: WebDriver = Browser.obtainWebDriver()
 
-    var findLastArticle: Boolean? = false
-
-    private val lastArticleChecker: (String?)->Boolean = checker@ { title ->
-        if(title.isNullOrEmpty()) return@checker false
-        if(title != account.lastArticleTitle) return@checker false
-        findLastArticle = true
-        println("last article encounter")
-        true
-    }
+    private var findLastArticle: Boolean? = false
 
     /**
      * 根据公众号爬取文章
      */
     fun crawlArticles(): List<Article> {
-        if (!tryNavigateToHomePage()) return emptyList()
+        Sleep.random()
+
+        if (!navigateToHomePage()) return emptyList()
+
+        Sleep.random()
 
         //切换到公众号列表页
         driver.switchToWindow(account.nick)
 
+        Sleep.random()
+
         //关闭其它窗口
-        driver.closeWindowByTitle(String.format(RELATED_ACCOUNT , account.nick))
+        driver.closeWindow(String.format(RELATED_ACCOUNT , account.nick))
 
         Sleep.random()
 
-        //解析第一页文章的元素
-        val allElements = getArticleElements()
+        val articleElements = driver.findElements(By.cssSelector(SELECTOR_ARTICLE_CONTAINER))
 
-        var articles = allElements.map { articleElementToArticle(it) }
+        var articles = articleElements.map { articleElementToArticle(it) }
 
         if(articleFilter != null) articles = articles.filter(articleFilter)
 
-        articles.forEach {
-            fetchArticleContent(it)
-            articleLoadCallback?.invoke(it)
+        articles.forEach { article ->
+            Sleep.random()
+
+            fetchArticleContent(article)
+
+            articleLoadCallback?.invoke(article)
         }
 
         driver.quit()
@@ -72,7 +71,10 @@ class ArticleSpider(private val account: WeChatAccount,
         return articles
     }
 
-    private fun tryNavigateToHomePage(): Boolean {
+    /**
+     * @return success or not
+     * */
+    private fun navigateToHomePage(): Boolean {
         //搜公众号，定位到公众号页面
         val navigator = HomePageNavigator(account, driver)
         val success = navigator.navigateToHomePage()
@@ -83,31 +85,15 @@ class ArticleSpider(private val account: WeChatAccount,
     }
 
 
-    private fun getArticleElements(): List<WebElement> {
-        Sleep.random()
-
-        val articles = driver.findElements(By.cssSelector(SELECTOR_ARTICLE_CONTAINER))
-
-        val articlesElements = ArrayList<WebElement>()
-        for (article in articles) {
-            val title = article.findElement(By.cssSelector(SELECTOR_ARTICLE_TITLE)).text
-            if(lastArticleChecker(title)) break
-            articlesElements.add(article)
-        }
-        return articlesElements
-    }
-
     private fun fetchArticleContent(article: Article) {
+        Logger.log("fetch article content: ${driver.title}")
+
         driver.navigate().to(article.url)
-        println("fetch article content: ${driver.title}")
 
         Sleep.random()
-
-        val currentUrl = driver.currentUrl
-        article.url = currentUrl
 
         val body = driver.findElement(By.cssSelector(BODY)).text
-        println("find article body : $body")
+        Logger.log("find article body : $body")
 
         article.content = body
     }

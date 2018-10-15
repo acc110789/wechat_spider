@@ -3,14 +3,14 @@ package me.run
 import me.model.WeChatAccount
 import me.mysql.dao.ArticleDao
 import me.spider.ArticleSpider
-import me.spider.WhenArticleLoaded
+import me.spider.OnArticleLoaded
 
 /**
  * Created by Administrator on 2015/9/22.
  */
 object TestCrawlOneAccount {
 
-    private val articleLoadCallback: WhenArticleLoaded =  { article ->
+    private val articleLoadCallback: OnArticleLoaded =  { article ->
         ArticleDao.save(article)
     }
 

@@ -7,35 +7,16 @@ import org.openqa.selenium.WebDriver
  * 通过选择器，往input中写入词语
  */
 fun WebDriver.inputAndSubmit(selector: String, word: String) {
-    val we = findElement(By.cssSelector(selector))
-    if (we != null) {
-        for (i in 0 until word.length) {
-            val item = word[i]
-            we.sendKeys(item.toString())
-            Sleep.random(500, 1000)
+    val textInput = findElement(By.cssSelector(selector))
+    if (textInput != null) {
+        for(char in word) {
+            textInput.sendKeys(char.toString())
+            Sleep.random(500 , 1000)
         }
-        we.submit()
+        textInput.submit()
     } else {
-        println("currentPageUrl :$currentUrl")
-        println("elementNotFound :$selector")
-        System.exit(0)
-    }
-}
-
-/**
- * 通过选择器，往input中写入词语
- */
-fun WebDriver.input(selector: String, word: String) {
-    val we = findElement(By.cssSelector(selector))
-    if (we != null) {
-        for (i in 0 until word.length) {
-            val item = word[i]
-            we.sendKeys(item.toString())
-            Sleep.random(500, 1000)
-        }
-    } else {
-        println("currentPageUrl :$currentUrl")
-        println("elementNotFound :$selector")
+        Logger.log("currentPageUrl :$currentUrl")
+        Logger.log("elementNotFound :$selector")
         System.exit(0)
     }
 }
@@ -48,8 +29,8 @@ fun WebDriver.clickBySelector(selector: String) {
     if (we != null) {
         we.click()
     } else {
-        println("currentPageUrl :$currentUrl")
-        println("elementNotFound: $selector")
+        Logger.log("currentPageUrl :$currentUrl")
+        Logger.log("elementNotFound: $selector")
         System.exit(0)
     }
 }
@@ -64,13 +45,13 @@ fun WebDriver.switchToWindow(windowTitle: String): Boolean {
         switchTo().window(s)
         if (!title.contains(windowTitle)) continue
         flag = true
-        println("Switch to window: $windowTitle successfully!")
+        Logger.log("Switch to window: $windowTitle successfully!")
         break
     }
     return flag
 }
 
-fun WebDriver.closeWindowByTitle(windowTitle: String): Boolean {
+fun WebDriver.closeWindow(windowTitle: String): Boolean {
     var closed = false
     val initHandle = windowHandle
     val handles = windowHandles

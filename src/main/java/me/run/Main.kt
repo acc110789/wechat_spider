@@ -4,28 +4,20 @@ import me.model.Article
 import me.model.WeChatAccount
 import me.mysql.dao.ArticleDao
 import me.spider.ArticleSpider
-import me.spider.WhenArticleLoaded
+import me.spider.OnArticleLoaded
 
 /**
  * Created by Administrator on 2015/9/22.
  */
 object Main {
 
-    private val articleLoadCallback: WhenArticleLoaded =  { article ->
-        println("save article: ${article.title}")
-        ArticleDao.save(article)
-    }
+    private val articleLoadCallback: OnArticleLoaded =  { article -> ArticleDao.save(article) }
 
-    private val articleFilter:(Article)->Boolean = { article ->
-        !ArticleDao.isArticleExist(article)
-    }
+    private val articleFilter:(Article)->Boolean = { article -> !ArticleDao.isArticleExist(article) }
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val accounts = WeChatAccount.new
-        for (account in accounts) {
-            crawlAccount(account)
-        }
+        WeChatAccount.accounts.forEach { account -> crawlAccount(account) }
     }
 
     private fun crawlAccount(account: WeChatAccount): List<Article> {
